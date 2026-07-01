@@ -110,6 +110,7 @@
   .a-cat{font-size:.64rem;font-weight:700;letter-spacing:.1em;color:#15263f;background:var(--amber);padding:2px 9px;border-radius:11px;display:inline-block}
   article h1{font-family:"Oswald",sans-serif;font-weight:700;font-size:1.45rem;line-height:1.4;margin:11px 0 14px}
   .a-hero{height:160px;border-radius:14px;background:linear-gradient(135deg,#15263f,#2c4a73);margin-bottom:8px;display:flex;align-items:flex-end;padding:12px;color:#aeb9cc;font-size:.64rem}
+  .a-hero-img{width:100%;height:auto;border-radius:14px;margin-bottom:10px;display:block}
   article p{font-size:.92rem;line-height:1.95;margin:14px 0;color:#26313f}
   article h2{font-size:1.04rem;font-weight:700;color:var(--navy);margin:24px 0 4px;padding-left:11px;border-left:4px solid var(--grass)}
   .callout{background:#fdf3ea;border:1px solid #f0d9c4;border-left:4px solid var(--clay);border-radius:11px;padding:13px 15px;margin:16px 0}
@@ -569,28 +570,43 @@ document.body.addEventListener("click",e=>{
 });
 
 /* ===== コラム（簡略） ===== */
-const ARTICLES={clumsy:{cat:"発育発達",title:"「急にフォームが崩れた」とき、親が知っておきたいこと",excerpt:"中学で急に動きがぎこちなくなった——それは多くの子に起こりやすい、成長の途中のサインかもしれません。"}};
+let ARTICLES={}, ORDER=[];
 const CCATS=["すべて","発育発達","ピッチング","トレーニング","コンディショニング"];
 const SOON={"発育発達":"同学年でも、成長は3年ぶん違う","ピッチング":"球数だけでは守れない、肩ひじの話","トレーニング":"成長期の筋トレ、やっていいこと・待つこと","コンディショニング":"試合前夜、眠れない子へ"};
 let cc="すべて";
 const acard=(id,a)=>{const on=favs.has("art:"+id);return `<div class="acard" data-article="${id}"><div class="thumb"><span class="cat">${a.cat}</span></div><div class="body"><h3>${a.title}</h3><p>${a.excerpt}</p></div><button class="star ${on?'on':''}" data-fav="art:${id}" aria-label="お気に入り">${starSVG(on)}</button></div>`;};
 function renderColChips(){$("#col-chips").innerHTML=CCATS.map(c=>`<button class="chip ${c===cc?'active':''}" data-ccat="${c}">${c}</button>`).join("");}
-function renderColumns(){let h="";Object.entries(ARTICLES).forEach(([id,a])=>{if(cc==="すべて"||cc===a.cat)h+=acard(id,a);});
+function renderColumns(){let h="";ORDER.forEach(id=>{const a=ARTICLES[id];if(a&&(cc==="すべて"||cc===a.cat))h+=acard(id,a);});
   Object.entries(SOON).forEach(([cat,t])=>{if(cc==="すべて"||cc===cat)h+=`<div class="acard soon"><div class="thumb"><span class="cat">${cat}</span></div><div class="body"><h3>${t}</h3><span class="soon-tag">近日公開</span></div></div>`;});$("#col-list").innerHTML=h;}
 $("#col-chips").addEventListener("click",e=>{const b=e.target.closest("[data-ccat]");if(!b)return;cc=b.dataset.ccat;renderColChips();renderColumns();});
-const ARTICLE_HTML={clumsy:`<div class="a-hero">［タイトルに合った画像が入ります］</div><span class="a-cat">発育発達</span><h1>「急にフォームが崩れた」とき、親が知っておきたいこと</h1>
-  <p>「6年生のときはあんなにきれいに投げていたのに、中学に入ったら急に動きがぎこちなくなった」。それはお子さんが下手になったわけでも、努力を怠けているわけでもない可能性が高いのです。</p>
-  <h2>それには名前があります</h2><p>この時期のぎこちなさを「クラムジー現象（思春期の不器用さ）」と呼ぶことがあります。身体が急に大きくなり、脳が“前の身体の感覚”で動かそうとして一時的にズレる、多くの子に起こりやすい現象です。</p>
-  <h2>ただし、見逃してはいけないサインがあります</h2><div class="callout"><b>こんなときは「成長のせい」と決めつけず、休ませて受診を</b><ul><li>投げるとき・投げたあとに肩やひじが痛い</li><li>腕が以前のように上がらない</li><li>痛みをかばう不自然な動き</li></ul></div>
-  <p>ぎこちなさは様子を見てよいことが多いですが、「痛み」は別物です。今は結果を急がず、お子さんの成長そのものを温かく見守ってあげてください。</p>`};
+function blockHTML(b){
+  if(b.t==="p")return `<p>${b.c}</p>`;
+  if(b.t==="h2")return `<h2>${b.c}</h2>`;
+  if(b.t==="callout")return `<div class="callout"><b>${b.title}</b><ul>${(b.items||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>`;
+  return "";
+}
 let curArticle=null;
-function openArticle(id){curArticle=id;const on=favs.has("art:"+id);
-  $("#article-body").innerHTML=`<button class="artfav ${on?'on':''}" data-fav="art:${id}">${starSVG(on)}${on?'お気に入り登録済み':'お気に入りに追加'}</button>`+ARTICLE_HTML[id];
+function openArticle(id){const a=ARTICLES[id];if(!a)return;curArticle=id;const on=favs.has("art:"+id);
+  const img=a.image?`<img class="a-hero-img" src="${a.image}" alt="${a.title}｜${a.cat}">`:"";
+  $("#article-body").innerHTML=`<button class="artfav ${on?'on':''}" data-fav="art:${id}">${starSVG(on)}${on?'お気に入り登録済み':'お気に入りに追加'}</button>`
+    + img + `<span class="a-cat">${a.cat}</span><h1>${a.title}</h1>`
+    + (a.blocks||[]).map(blockHTML).join("")
+    + `<div class="a-foot">カテゴリ：${a.cat}　／　中学硬式野球ポータル</div>`;
   go("article");}
+async function loadArticles(){
+  try{
+    const r=await fetch("articles.json",{cache:"no-store"});
+    const data=await r.json();
+    data.sort((x,y)=>String(y.date||"").localeCompare(String(x.date||"")));
+    ORDER=data.map(a=>a.id);
+    ARTICLES=Object.fromEntries(data.map(a=>[a.id,a]));
+  }catch(e){ARTICLES={};ORDER=[];}
+  renderColumns();renderFavorites();
+}
 $("#back-article").addEventListener("click",()=>go("columns"));
 
 /* 初期化 */
-renderStep1();renderColChips();renderColumns();renderFavorites();
+renderStep1();renderColChips();loadArticles();
 </script>
 </body>
 </html>
