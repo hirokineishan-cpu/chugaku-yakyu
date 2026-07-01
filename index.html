@@ -96,6 +96,16 @@
   .artfav{display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-size:.78rem;font-weight:700;border:1.5px solid var(--line);background:#fff;color:var(--muted);border-radius:20px;padding:7px 15px;cursor:pointer;margin-bottom:6px}
   .artfav svg{width:16px;height:16px;color:var(--amber)}
   .artfav.on{border-color:var(--amber);color:var(--clay);background:#fdf3ea}
+  .byline{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;font-size:.78rem;color:var(--muted);font-weight:700;margin:0 0 16px}
+  .byline .who{color:var(--ink)}
+  .byline a{color:var(--grass);text-decoration:none}
+  .about{max-width:680px;margin:0 auto;padding:24px 20px 50px}
+  .about .av{width:96px;height:96px;display:block;margin:0 auto 12px}
+  .about .t{font-family:"Oswald",sans-serif;font-weight:700;font-size:1.5rem;text-align:center;margin-bottom:3px}
+  .about .role{text-align:center;font-size:.78rem;color:var(--grass);font-weight:700;margin-bottom:16px}
+  .about .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px 18px 10px}
+  .about .card p{font-size:.92rem;line-height:1.95;margin:14px 0;color:#26313f}
+  .about .note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:14px}
   .acard:hover{border-color:var(--grass)}.acard.soon{cursor:default;opacity:.6}
   .thumb{width:70px;height:70px;flex:none;border-radius:10px;background:linear-gradient(135deg,#1d3357,#2c4a73);position:relative;overflow:hidden}
   .thumb .cat{position:absolute;left:6px;bottom:6px;font-size:.54rem;font-weight:700;color:#15263f;background:var(--amber);padding:1px 6px;border-radius:10px}
@@ -132,7 +142,7 @@
 <header>
   <div class="bar"><div class="ball" data-go="home"></div>
     <h1 data-go="home">中学硬式野球 試合結果まとめ<small>都道府県から探す</small></h1></div>
-  <nav><button data-go="home" class="active">試合結果</button><button data-go="columns">コラム</button><button data-go="favorites">お気に入り</button></nav>
+  <nav><button data-go="home" class="active">試合結果</button><button data-go="columns">コラム</button><button data-go="favorites">お気に入り</button><button data-go="about">運営者</button></nav>
 </header>
 
 <!-- 試合結果（3ステップ） -->
@@ -407,6 +417,34 @@
   <article id="article-body"></article>
 </section>
 
+<!-- 運営者について -->
+<section class="view" id="v-about">
+  <div class="about">
+    <svg class="av" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="管理人アイコン">
+      <defs><linearGradient id="avbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d3357"/><stop offset="1" stop-color="#15263f"/></linearGradient></defs>
+      <circle cx="60" cy="60" r="60" fill="url(#avbg)"/>
+      <path d="M22 120 C22 90 40 82 60 82 C80 82 98 90 98 120 Z" fill="#eef0ec"/>
+      <rect x="52" y="70" width="16" height="14" fill="#e6e8e2"/>
+      <circle cx="60" cy="56" r="19" fill="#eef0ec"/>
+      <path d="M41 55 Q40 34 60 34 Q80 34 79 55 Q60 47 41 55 Z" fill="#e2a33b"/>
+      <path d="M60 53 Q42 53 37 60 Q50 63 63 57 Z" fill="#c2871f"/>
+      <circle cx="60" cy="35" r="2.4" fill="#c2871f"/>
+      <text x="60" y="52" font-family="Oswald, sans-serif" font-size="13" font-weight="700" fill="#15263f" text-anchor="middle">B</text>
+    </svg>
+    <div class="t">運営者について</div>
+    <div class="role">現役・野球指導者／このサイトの管理人</div>
+    <div class="card">
+      <p>はじめまして。このサイトを運営している管理人です。</p>
+      <p>現在も現役で、硬式野球の投球指導に携わっています。これまで小学生からプロの選手まで幅広く指導してきましたが、いちばん多く関わってきたのは中学生の年代です。</p>
+      <p>成長期の子どもは、体も心も大きく変わります。だからこそ、良かれと思ってやったことが思わぬケガや伸び悩みにつながることもあれば、逆に、保護者が少し知っておくだけで防げること・支えられることも、たくさんあります。</p>
+      <p>このサイトは、そんな想いから作りました。全国の試合結果を探しやすくまとめること。そして、成長期の体づくりや育成のヒントを、保護者向けにやさしく届けること。この2つを軸にしています。</p>
+      <p>特定の団体や商品を売るためのものではありません。あくまでフラットに、"安全と成長"を最優先に。「痛みがあるときは受診を」というように、お子さんを守ることをいちばん大事にしています。</p>
+      <p>記事は、できるだけやさしい言葉で、今のがんばりを否定しないように書いています。お子さんの成長を、一緒に見守っていけたら嬉しいです。</p>
+    </div>
+    <div class="note">※本サイトは特定の団体・企業とは独立して運営しています。</div>
+  </div>
+</section>
+
 <script>
 /* ===== 都道府県（地域グループ） ===== */
 const PREF_GROUPS=[
@@ -589,7 +627,7 @@ let curArticle=null;
 function openArticle(id){const a=ARTICLES[id];if(!a)return;curArticle=id;const on=favs.has("art:"+id);
   const img=a.image?`<img class="a-hero-img" src="${a.image}" alt="${a.title}｜${a.cat}">`:"";
   $("#article-body").innerHTML=`<button class="artfav ${on?'on':''}" data-fav="art:${id}">${starSVG(on)}${on?'お気に入り登録済み':'お気に入りに追加'}</button>`
-    + img + `<span class="a-cat">${a.cat}</span><h1>${a.title}</h1>`
+    + img + `<span class="a-cat">${a.cat}</span><h1>${a.title}</h1><div class="byline">文：<span class="who">管理人</span>（現役・野球指導者）　<a data-go="about">運営者について ›</a></div>`
     + (a.blocks||[]).map(blockHTML).join("")
     + `<div class="a-foot">カテゴリ：${a.cat}　／　中学硬式野球ポータル</div>`;
   go("article");}
