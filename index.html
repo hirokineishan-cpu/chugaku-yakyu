@@ -608,14 +608,13 @@ document.body.addEventListener("click",e=>{
 });
 
 /* ===== コラム（簡略） ===== */
-let ARTICLES={}, ORDER=[];
+let ARTICLES={}, ORDER=[], SOONL=[];
 const CCATS=["すべて","発育発達","ピッチング","トレーニング","コンディショニング"];
-const SOON={"発育発達":"同学年でも、成長は3年ぶん違う","ピッチング":"球数だけでは守れない、肩ひじの話","トレーニング":"成長期の筋トレ、やっていいこと・待つこと","コンディショニング":"試合前夜、眠れない子へ"};
 let cc="すべて";
 const acard=(id,a)=>{const on=favs.has("art:"+id);return `<div class="acard" data-article="${id}"><div class="thumb"><span class="cat">${a.cat}</span></div><div class="body"><h3>${a.title}</h3><p>${a.excerpt}</p></div><button class="star ${on?'on':''}" data-fav="art:${id}" aria-label="お気に入り">${starSVG(on)}</button></div>`;};
 function renderColChips(){$("#col-chips").innerHTML=CCATS.map(c=>`<button class="chip ${c===cc?'active':''}" data-ccat="${c}">${c}</button>`).join("");}
 function renderColumns(){let h="";ORDER.forEach(id=>{const a=ARTICLES[id];if(a&&(cc==="すべて"||cc===a.cat))h+=acard(id,a);});
-  Object.entries(SOON).forEach(([cat,t])=>{if(cc==="すべて"||cc===cat)h+=`<div class="acard soon"><div class="thumb"><span class="cat">${cat}</span></div><div class="body"><h3>${t}</h3><span class="soon-tag">近日公開</span></div></div>`;});$("#col-list").innerHTML=h;}
+  SOONL.forEach(a=>{if(cc==="すべて"||cc===a.cat)h+=`<div class="acard soon"><div class="thumb"><span class="cat">${a.cat}</span></div><div class="body"><h3>${a.title}</h3><span class="soon-tag">近日公開</span></div></div>`;});$("#col-list").innerHTML=h;}
 $("#col-chips").addEventListener("click",e=>{const b=e.target.closest("[data-ccat]");if(!b)return;cc=b.dataset.ccat;renderColChips();renderColumns();});
 function blockHTML(b){
   if(b.t==="p")return `<p>${b.c}</p>`;
@@ -635,10 +634,12 @@ async function loadArticles(){
   try{
     const r=await fetch("articles.json",{cache:"no-store"});
     const data=await r.json();
-    data.sort((x,y)=>String(y.date||"").localeCompare(String(x.date||"")));
-    ORDER=data.map(a=>a.id);
-    ARTICLES=Object.fromEntries(data.map(a=>[a.id,a]));
-  }catch(e){ARTICLES={};ORDER=[];}
+    const pub=data.filter(a=>!a.soon);
+    pub.sort((x,y)=>String(y.date||"").localeCompare(String(x.date||"")));
+    ORDER=pub.map(a=>a.id);
+    ARTICLES=Object.fromEntries(pub.map(a=>[a.id,a]));
+    SOONL=data.filter(a=>a.soon);
+  }catch(e){ARTICLES={};ORDER=[];SOONL=[];}
   renderColumns();renderFavorites();
 }
 $("#back-article").addEventListener("click",()=>go("columns"));
