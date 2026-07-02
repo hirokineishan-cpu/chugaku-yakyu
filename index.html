@@ -151,6 +151,22 @@
   .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--amber) 0%,var(--clay) 60%,var(--grass) 100%);z-index:4}
   .hero-pitcher{position:absolute;right:-8px;bottom:0;height:112%;width:auto;opacity:.5;z-index:2}
   @media(min-width:520px){.hero{min-height:440px}.hero-title{font-size:2.9rem}}
+  /* ===== フッター・固定ページ ===== */
+  .site-foot{background:#0f1c30;color:#aeb9cc;padding:26px 20px 30px}
+  .site-foot .fwrap{max-width:680px;margin:0 auto;text-align:center}
+  .site-foot .flinks{display:flex;flex-wrap:wrap;gap:10px 20px;justify-content:center;margin-bottom:14px}
+  .site-foot .flinks a{color:#dfe7f2;font-size:.78rem;font-weight:600;text-decoration:none;cursor:pointer}
+  .site-foot .flinks a:active{color:var(--amber)}
+  .site-foot .fcopy{font-size:.68rem;color:#6f7d92;line-height:1.7}
+  .legal{max-width:680px;margin:0 auto;padding:22px 20px 46px}
+  .legal .back{display:inline-flex;align-items:center;gap:5px;color:var(--grass);font-weight:700;font-size:.82rem;text-decoration:none;cursor:pointer;margin-bottom:10px;background:none;border:none;font-family:inherit;padding:0}
+  .legal .t{font-family:"Oswald",sans-serif;font-weight:700;font-size:1.55rem;margin-bottom:6px}
+  .legal .lead{font-size:.86rem;color:var(--muted);line-height:1.85;margin-bottom:14px}
+  .legal h3{font-size:.98rem;font-weight:700;margin:20px 0 6px;color:var(--ink);border-left:4px solid var(--amber);padding-left:9px}
+  .legal p{font-size:.88rem;line-height:1.95;color:#26313f;margin:6px 0}
+  .legal a.inline{color:var(--grass);font-weight:600}
+  .legal a.formbtn{display:inline-block;background:var(--navy);color:#fff;font-weight:700;font-size:.92rem;text-decoration:none;padding:14px 24px;border-radius:12px;margin:14px 0}
+  .legal .meta{font-size:.74rem;color:var(--muted);margin-top:24px;border-top:1px solid var(--line);padding-top:12px;line-height:1.8}
 </style>
 </head>
 <body>
@@ -470,6 +486,74 @@
     <div class="note">※本サイトは特定の団体・企業とは独立して運営しています。</div>
   </div>
 </section>
+
+<!-- お問い合わせ -->
+<section class="view" id="v-contact">
+  <div class="legal">
+    <button class="back" data-go="home">‹ トップへ戻る</button>
+    <div class="t">お問い合わせ</div>
+    <p class="lead">ご質問・ご感想、記事内容や掲載についてのお問い合わせは、以下のフォームよりお願いします。いただいた内容には、確認のうえ順次対応いたします。</p>
+    <a class="formbtn" href="https://docs.google.com/forms/d/1uqQgfAFglT5y4in1KEtK-2A7qXCEwGCxN0qyMEsEXH0/viewform" target="_blank" rel="noopener noreferrer">お問い合わせフォームを開く ›</a>
+    <p>・返信には数日いただく場合があります。</p>
+    <p>・フォームにご入力いただいたお名前・メールアドレスは、お問い合わせへの返信のためだけに使用します。</p>
+    <p>・医療・健康に関する個別のご相談にはお答えできません。痛みや不調がある場合は、医師などの専門家にご相談ください。</p>
+  </div>
+</section>
+
+<!-- プライバシーポリシー -->
+<section class="view" id="v-privacy">
+  <div class="legal">
+    <button class="back" data-go="home">‹ トップへ戻る</button>
+    <div class="t">プライバシーポリシー</div>
+    <p class="lead">当サイト「中学硬式野球 試合結果まとめ」（chugakuyakyu.com）における、個人情報およびアクセス情報の取り扱いについて定めます。</p>
+    <h3>個人情報の取得と利用</h3>
+    <p>当サイトでは、お問い合わせフォームを通じて、お名前・メールアドレス・お問い合わせ内容を取得することがあります。これらは、お問い合わせへの対応・返信の目的のみに使用し、ご本人の同意なく第三者に提供することはありません。</p>
+    <h3>アクセス解析ツールについて</h3>
+    <p>当サイトでは、サイトの利用状況を把握するため、Googleアナリティクスなどのアクセス解析ツールを利用する場合があります。これらのツールはCookieを使用してトラフィックデータを収集しますが、個人を特定する情報は含みません。収集を望まない場合は、ブラウザの設定でCookieを無効にすることで拒否できます。</p>
+    <h3>広告について</h3>
+    <p>当サイトでは、第三者配信の広告サービス（Google AdSenseなど）を利用する場合があります。これらの広告配信事業者は、ユーザーの興味に応じた広告を表示するためにCookieを使用することがあります。パーソナライズ広告は、<a class="inline" href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">Googleの広告設定</a>で無効にできます。</p>
+    <h3>Cookieについて</h3>
+    <p>Cookieは、ウェブサイトが利用者のブラウザに保存する小さなデータです。当サイトでは、アクセス解析や広告配信のためにCookieを使用することがあります。ブラウザの設定でCookieを無効化することができます。</p>
+    <h3>免責事項</h3>
+    <p>当サイトの情報は正確を期していますが、内容の完全性・正確性を保証するものではありません。詳しくは免責事項のページをご覧ください。</p>
+    <h3>プライバシーポリシーの変更</h3>
+    <p>本ポリシーの内容は、法令の変更やサイトの運営方針により、予告なく変更することがあります。変更後の内容は、本ページに掲載した時点から効力を生じます。</p>
+    <h3>お問い合わせ</h3>
+    <p>本ポリシーに関するお問い合わせは、お問い合わせフォームよりお願いします。</p>
+    <div class="meta">運営者：管理人<br>制定日：2026年7月2日</div>
+  </div>
+</section>
+
+<!-- 免責事項 -->
+<section class="view" id="v-terms">
+  <div class="legal">
+    <button class="back" data-go="home">‹ トップへ戻る</button>
+    <div class="t">免責事項</div>
+    <p class="lead">当サイトをご利用いただく前に、以下の内容をご確認ください。</p>
+    <h3>情報の正確性について</h3>
+    <p>当サイトに掲載する情報は、正確な内容の提供に努めていますが、その完全性・正確性・最新性を保証するものではありません。試合結果や各連盟の情報については、必ず各公式サイトでご確認ください。</p>
+    <h3>健康・ケガに関する情報について</h3>
+    <p>当サイトで紹介する成長・トレーニング・コンディショニング等の情報は、一般的な参考情報であり、医療的な助言ではありません。お子さまに痛みや不調がある場合は、自己判断せず、必ず医師などの専門家にご相談ください。実践はご家庭・指導者の判断と責任のもとでお願いします。</p>
+    <h3>外部リンクについて</h3>
+    <p>当サイトからリンクする外部サイト（各連盟の公式サイト等）の内容については、当サイトは責任を負いません。各サイトの利用規約に従ってご利用ください。</p>
+    <h3>損害等の責任</h3>
+    <p>当サイトの情報の利用によって生じたいかなる損害についても、当サイトは責任を負いかねます。あらかじめご了承ください。</p>
+    <div class="meta">運営者：管理人</div>
+  </div>
+</section>
+
+<!-- フッター -->
+<footer class="site-foot">
+  <div class="fwrap">
+    <div class="flinks">
+      <a data-go="about">運営者について</a>
+      <a data-go="contact">お問い合わせ</a>
+      <a data-go="privacy">プライバシーポリシー</a>
+      <a data-go="terms">免責事項</a>
+    </div>
+    <div class="fcopy">© 2026 中学硬式野球 試合結果まとめ（chugakuyakyu.com）<br>本サイトは特定の団体・企業とは独立して運営しています。</div>
+  </div>
+</footer>
 
 <script>
 /* ===== 都道府県（地域グループ） ===== */
