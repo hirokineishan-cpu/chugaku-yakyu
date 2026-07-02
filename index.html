@@ -136,6 +136,20 @@
   .geolonia-svg-map .prefecture{fill:#c7cfd9;stroke:#f7f7f3;stroke-width:1;cursor:pointer;transition:fill .12s}
   .geolonia-svg-map .prefecture:hover{fill:var(--grass)}
   .geolonia-svg-map .prefecture:active{fill:var(--amber)}
+  /* ===== ヒーロー（トップ） ===== */
+  .hero{position:relative;overflow:hidden;min-height:360px;display:flex;align-items:center;background:linear-gradient(100deg,rgba(9,16,28,.95) 0%,rgba(14,26,46,.82) 34%,rgba(14,26,46,.38) 60%,rgba(14,26,46,.05) 88%),url("0A66BA51-A37D-4EB6-8727-9733A4F0FEC6.jpeg");background-size:cover;background-position:center right;color:#fff;padding:30px 20px 42px}
+  .hero-bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .hero-inner{position:relative;z-index:3;max-width:680px;margin:0 auto}
+  .hero-eyebrow{font-family:"Oswald",sans-serif;letter-spacing:.3em;font-size:.6rem;font-weight:600;color:var(--amber);text-transform:uppercase;margin-bottom:8px}
+  .hero-title{font-family:"Oswald",sans-serif;font-weight:700;font-size:2.15rem;line-height:1.1;letter-spacing:.01em;margin:0;text-shadow:0 2px 14px rgba(0,0,0,.35)}
+  .hero-title em{color:var(--amber);font-style:normal}
+  .hero-uline{width:56px;height:5px;background:linear-gradient(90deg,var(--amber),var(--clay));border-radius:3px;margin:12px 0 12px}
+  .hero-sub{font-size:.84rem;line-height:1.7;color:#cdd8e8;max-width:23em;font-weight:500}
+  .hero-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:15px}
+  .hero-badges span{font-size:.62rem;font-weight:700;color:#dfe7f2;border:1px solid rgba(255,255,255,.28);border-radius:20px;padding:4px 11px;backdrop-filter:blur(2px)}
+  .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--amber) 0%,var(--clay) 60%,var(--grass) 100%);z-index:4}
+  .hero-pitcher{position:absolute;right:-8px;bottom:0;height:112%;width:auto;opacity:.5;z-index:2}
+  @media(min-width:520px){.hero{min-height:440px}.hero-title{font-size:2.9rem}}
 </style>
 </head>
 <body>
@@ -147,6 +161,16 @@
 
 <!-- 試合結果（3ステップ） -->
 <section class="view active" id="v-home">
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Chugaku Yakyu Portal</div>
+      <h2 class="hero-title">全国の<em>試合結果</em>を、<br>ここから。</h2>
+      <div class="hero-uline"></div>
+      <p class="hero-sub">硬式5連盟の速報・結果へ、都道府県からすぐに。成長期の育成コラムも。</p>
+      <div class="hero-badges"><span>シニア</span><span>ボーイズ</span><span>ポニー</span><span>ヤング</span><span>フレッシュ</span></div>
+    </div>
+  </div>
   <!-- STEP1: 都道府県 -->
   <div id="step1">
     <div class="step-h wrap"><div class="k">STEP 1</div><h2>お住まいの都道府県を選択</h2></div>
@@ -435,7 +459,8 @@
     <div class="role">現役・野球指導者／このサイトの管理人</div>
     <div class="card">
       <p>はじめまして。このサイトを運営している管理人です。</p>
-      <p>現在も現役で、硬式野球の投球指導に携わっています。これまで小学生からプロの選手まで幅広く指導してきましたが、いちばん多く関わってきたのは中学生の年代です。</p>
+      <p>現役の野球指導者として、これまで小学生からプロまで、幅広い年代の選手を指導してきました。硬式・軟式を問わず、ジュニア年代の育成を専門にしています。いちばん多く関わってきたのは、中学生の年代です。</p>
+      <p>これまで指導してきた選手の中には、甲子園常連校へ進んだ選手や、プロ野球選手になった選手（これまでに8名）もいます。現在も、20名ほどの選手を担当しています。</p>
       <p>成長期の子どもは、体も心も大きく変わります。だからこそ、良かれと思ってやったことが思わぬケガや伸び悩みにつながることもあれば、逆に、保護者が少し知っておくだけで防げること・支えられることも、たくさんあります。</p>
       <p>このサイトは、そんな想いから作りました。全国の試合結果を探しやすくまとめること。そして、成長期の体づくりや育成のヒントを、保護者向けにやさしく届けること。この2つを軸にしています。</p>
       <p>特定の団体や商品を売るためのものではありません。あくまでフラットに、"安全と成長"を最優先に。「痛みがあるときは受診を」というように、お子さんを守ることをいちばん大事にしています。</p>
