@@ -96,6 +96,7 @@
 
   /* コラム/記事 */
   .col-intro{padding:14px 18px 2px}.col-intro h2{font-family:"Oswald",sans-serif;font-weight:700;font-size:1.4rem}.col-intro p{font-size:.8rem;color:var(--muted);margin-top:4px}
+  .tr-empty{text-align:center;color:var(--muted);font-size:.84rem;padding:34px 20px;background:#fff;border:1px dashed var(--line);border-radius:14px;margin:6px 14px}
   .acard{display:flex;gap:13px;background:#fff;border:1px solid var(--line);border-radius:15px;padding:12px;cursor:pointer;align-items:center;width:100%;font-family:inherit;text-align:left;position:relative;box-shadow:0 2px 10px rgba(21,38,63,.05);transition:box-shadow .15s,transform .1s}
   .acard .body{padding-right:26px}
   .favhd{font-family:"Oswald",sans-serif;font-weight:600;font-size:.74rem;letter-spacing:.1em;color:var(--clay);display:flex;align-items:center;gap:7px;margin:14px 2px 9px}
@@ -181,7 +182,7 @@
 <header>
   <div class="bar"><div class="ball" data-go="home"></div>
     <h1 data-go="home">中学硬式野球 試合結果まとめ<small>都道府県から探す</small></h1></div>
-  <nav><button data-go="home" class="active">試合結果</button><button data-go="columns">コラム</button><button data-go="favorites">お気に入り</button><button data-go="about">運営者</button></nav>
+  <nav><button data-go="home" class="active">試合結果</button><button data-go="columns">コラム</button><button data-go="training">トレーニング</button><button data-go="about">運営者</button></nav>
 </header>
 
 <!-- 試合結果（3ステップ） -->
@@ -460,6 +461,13 @@
   <div class="colchips" id="col-chips"></div>
   <div class="alist wrap" id="col-list"></div>
 </section>
+
+<!-- トレーニング・練習方法 -->
+<section class="view" id="v-training">
+  <div class="col-intro wrap"><h2>トレーニング・練習方法</h2><p>選手・指導者のための実践メニュー。分野ごとに、具体的な取り組み方を紹介します。まずは「なぜ」を学びのコラムで、そして「どうやる」をここで。</p></div>
+  <div class="colchips" id="tr-chips"></div>
+  <div class="alist wrap" id="tr-list"></div>
+</section>
 <!-- 記事 -->
 <section class="view" id="v-article">
   <button class="backbtn" id="back-article"><svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>コラム一覧へ戻る</button>
@@ -554,6 +562,7 @@
 <footer class="site-foot">
   <div class="fwrap">
     <div class="flinks">
+      <a data-go="favorites">お気に入り</a>
       <a data-go="about">運営者について</a>
       <a data-go="contact">お問い合わせ</a>
       <a data-go="privacy">プライバシーポリシー</a>
@@ -726,7 +735,7 @@ document.body.addEventListener("click",e=>{
 });
 
 /* ===== コラム（簡略） ===== */
-let ARTICLES={}, ORDER=[], SOONL=[];
+let ARTICLES={}, ORDER=[], SOONL=[], TRORDER=[], tcc="すべて";
 const CCATS=["すべて","発育発達","ピッチング","トレーニング","コンディショニング"];
 let cc="すべて";
 const CATSTYLE={"発育発達":{c:"#2c6a48",g:"linear-gradient(135deg,#2c6a48,#40936a)"},"ピッチング":{c:"#20365c",g:"linear-gradient(135deg,#1d3357,#33578c)"},"トレーニング":{c:"#b4502a",g:"linear-gradient(135deg,#b4502a,#d67144)"},"コンディショニング":{c:"#2f7d8a",g:"linear-gradient(135deg,#2f7d8a,#43a2b0)"}};
@@ -737,11 +746,32 @@ const CATICON={
 "コンディショニング":'<svg viewBox="0 0 24 24" fill="none"><path d="M20.5 14.5A8 8 0 019.5 3.5 7 7 0 1020.5 14.5z" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/></svg>'};
 const catStyle=c=>CATSTYLE[c]||CATSTYLE["ピッチング"];
 const catIcon=c=>CATICON[c]||CATICON["ピッチング"];
-const acard=(id,a)=>{const on=favs.has("art:"+id);const st=catStyle(a.cat);return `<div class="acard" data-article="${id}"><div class="thumb" style="background:${st.g}">${catIcon(a.cat)}</div><div class="body"><span class="cat-badge" style="background:${st.c}">${a.cat}</span><h3>${a.title}</h3><p>${a.excerpt}</p></div><button class="star ${on?'on':''}" data-fav="art:${id}" aria-label="お気に入り">${starSVG(on)}</button></div>`;};
+const TRAIN_GROUPS=["スキルトレーニング・ピッチング","スキルトレーニング・バッティング","感覚機能トレーニング","ランニングプログラム","可動性トレーニング"];
+const TR_LABEL={"スキルトレーニング・ピッチング":"ピッチング","スキルトレーニング・バッティング":"バッティング","感覚機能トレーニング":"感覚機能","ランニングプログラム":"ランニング","可動性トレーニング":"可動性"};
+const catLabel=c=>TR_LABEL[c]||c;
+Object.assign(CATSTYLE,{
+ "スキルトレーニング・ピッチング":{c:"#20365c",g:"linear-gradient(135deg,#1d3357,#33578c)"},
+ "スキルトレーニング・バッティング":{c:"#b4502a",g:"linear-gradient(135deg,#b4502a,#d67144)"},
+ "感覚機能トレーニング":{c:"#5a4a86",g:"linear-gradient(135deg,#5a4a86,#7a68ab)"},
+ "ランニングプログラム":{c:"#2c6a48",g:"linear-gradient(135deg,#2c6a48,#40936a)"},
+ "可動性トレーニング":{c:"#2f7d8a",g:"linear-gradient(135deg,#2f7d8a,#43a2b0)"}
+});
+Object.assign(CATICON,{
+ "スキルトレーニング・ピッチング":CATICON["ピッチング"],
+ "スキルトレーニング・バッティング":'<svg viewBox="0 0 24 24" fill="none"><path d="M4 20l8-8M12.5 11.5l6.5-6.5a2 2 0 10-3-3L9.5 8.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5" cy="19" r="1.6" fill="#fff"/></svg>',
+ "感覚機能トレーニング":'<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="#fff" stroke-width="1.8"/><path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z" stroke="#fff" stroke-width="1.6"/></svg>',
+ "ランニングプログラム":'<svg viewBox="0 0 24 24" fill="none"><circle cx="15.5" cy="5" r="2" stroke="#fff" stroke-width="1.7"/><path d="M5 20l3.2-4.5 3 1.3 1.8-3.8M12.8 8.5l3.2 2.2 3.2-.9M8.5 15l-1-3.8 5-2.2 2.3 3.2" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ "可動性トレーニング":'<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="4" r="1.8" stroke="#fff" stroke-width="1.6"/><path d="M12 7v6M12 9l-5 3M12 9l5 3M12 13l-3 6M12 13l3 6" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>'
+});
+const acard=(id,a)=>{const on=favs.has("art:"+id);const st=catStyle(a.cat);return `<div class="acard" data-article="${id}"><div class="thumb" style="background:${st.g}">${catIcon(a.cat)}</div><div class="body"><span class="cat-badge" style="background:${st.c}">${catLabel(a.cat)}</span><h3>${a.title}</h3><p>${a.excerpt}</p></div><button class="star ${on?'on':''}" data-fav="art:${id}" aria-label="お気に入り">${starSVG(on)}</button></div>`;};
 function renderColChips(){$("#col-chips").innerHTML=CCATS.map(c=>`<button class="chip ${c===cc?'active':''}" data-ccat="${c}">${c}</button>`).join("");}
 function renderColumns(){let h="";ORDER.forEach(id=>{const a=ARTICLES[id];if(a&&(cc==="すべて"||cc===a.cat))h+=acard(id,a);});
   SOONL.forEach(a=>{if(cc==="すべて"||cc===a.cat){const st=catStyle(a.cat);h+=`<div class="acard soon"><div class="thumb" style="background:${st.g}">${catIcon(a.cat)}</div><div class="body"><span class="cat-badge" style="background:${st.c}">${a.cat}</span><h3>${a.title}</h3><span class="soon-tag">近日公開</span></div></div>`;}});$("#col-list").innerHTML=h;}
 $("#col-chips").addEventListener("click",e=>{const b=e.target.closest("[data-ccat]");if(!b)return;cc=b.dataset.ccat;renderColChips();renderColumns();});
+function renderTrChips(){$("#tr-chips").innerHTML=["すべて",...TRAIN_GROUPS].map(c=>`<button class="chip ${c===tcc?'active':''}" data-tcat="${c}">${catLabel(c)}</button>`).join("");}
+function renderTraining(){let h="";TRORDER.forEach(id=>{const a=ARTICLES[id];if(a&&(tcc==="すべて"||tcc===a.cat))h+=acard(id,a);});
+  if(!h)h=`<div class="tr-empty">このカテゴリのメニューは、順次追加していきます。</div>`;$("#tr-list").innerHTML=h;}
+$("#tr-chips").addEventListener("click",e=>{const b=e.target.closest("[data-tcat]");if(!b)return;tcc=b.dataset.tcat;renderTrChips();renderTraining();});
 function blockHTML(b){
   if(b.t==="p")return `<p>${b.c}</p>`;
   if(b.t==="h2")return `<h2>${b.c}</h2>`;
@@ -761,17 +791,21 @@ async function loadArticles(){
     const r=await fetch("articles.json",{cache:"no-store"});
     const data=await r.json();
     const pub=data.filter(a=>!a.soon);
-    pub.sort((x,y)=>String(y.date||"").localeCompare(String(x.date||"")));
-    ORDER=pub.map(a=>a.id);
     ARTICLES=Object.fromEntries(pub.map(a=>[a.id,a]));
+    const cols=pub.filter(a=>a.type!=="training");
+    const trs=pub.filter(a=>a.type==="training");
+    cols.sort((x,y)=>String(y.date||"").localeCompare(String(x.date||"")));
+    trs.sort((x,y)=>String(y.date||"").localeCompare(String(x.date||"")));
+    ORDER=cols.map(a=>a.id);
+    TRORDER=trs.map(a=>a.id);
     SOONL=data.filter(a=>a.soon);
-  }catch(e){ARTICLES={};ORDER=[];SOONL=[];}
-  renderColumns();renderFavorites();
+  }catch(e){ARTICLES={};ORDER=[];TRORDER=[];SOONL=[];}
+  renderColumns();renderTraining();renderFavorites();
 }
 $("#back-article").addEventListener("click",()=>go("columns"));
 
 /* 初期化 */
-renderStep1();renderColChips();loadArticles();
+renderStep1();renderColChips();renderTrChips();loadArticles();
 </script>
 </body>
 </html>
